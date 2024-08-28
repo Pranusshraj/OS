@@ -191,18 +191,22 @@ return 0;
  
  
  
- Fcfs :
+ SJF :
  #include <stdio.h>
+ #include <limits.h>
  struct process {
  int at, st, ft;
  } ready_list[10];
  int n;
  int dispatcher(int time) {
+ int bt = INT_MAX, index =-1;
  for (int i = 0; i < n; i++) {
- if (ready_list[i].ft == 0 && ready_list[i].at <= time)
- return i;
+ if (ready_list[i].ft == 0 && ready_list[i].at <= time && ready_list[i].st < bt) {
+ bt = ready_list[i].st;
+ index = i;
  }
- return-1;
+ }
+ return index;
  }
  int main() {
  printf("Enter number of processes: ");
@@ -219,17 +223,17 @@ return 0;
  continue;
  }
  ready_list[pid].ft = cur_time + ready_list[pid].st;
- cur_time = ready_list[pid].ft;
+ cur_time += ready_list[pid].st;
  i++;
  }
  printf("Process\tAT\tBT\tFT\tTT\tWT\n");
  for (int i = 0; i < n; i++) {
  int tt = ready_list[i].ft- ready_list[i].at;
  int wt = tt- ready_list[i].st;
- printf("%d\t%d\t%d\t%d\t%d\t%d\n", i + 1, ready_list[i].at, ready_list[i].st, ready_list[i].ft,
+printf("%d\t%d\t%d\t%d\t%d\t%d\n", i + 1, ready_list[i].at, ready_list[i].st, ready_list[i].ft,
  tt, wt);
  }
-return 0;
+ return 0;
  }
  
  
