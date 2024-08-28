@@ -386,3 +386,55 @@ printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n", i + 1, ready_list[i].at, ready_list[i].st
  }
  return 0;
  }
+
+
+ Pthreads :
+ Prgm 1 :
+ include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <pthread.h>
+ void *myThreadFun(void *a)
+ {
+ sleep(1);
+ printf("SASTRA Deemed Univeristy \n");
+ return NULL;
+ }
+ int main()
+ {
+ pthread_t thread_id;
+ printf("Before Thread\n");
+ pthread_create(&thread_id, NULL, myThreadFun, NULL);
+ pthread_join(thread_id, NULL);
+ printf("After Thread\n");
+ exit(0);
+ }
+ Prgm 2 :
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <pthread.h>
+ // Let us create a global variable to change it in threads
+ int g = 0;
+ // The function to be executed by all threads
+ void *myThreadFun(void *vargp)
+ {
+ // Store the value argument passed to this thread
+ int *myid = (int *)vargp;
+ // Let us create a static variable to observe its changes
+ static int s = 0;
+ // Change static and global variables
+ ++s; ++g;
+ // Print the argument, static and global variables
+printf("Thread ID: %d, Static: %d, Global: %d\n", *myid, ++s, ++g);
+ }
+ int main()
+ {
+ int i;
+ pthread_t tid;
+ // Let us create three threads
+ for (i = 0; i < 3; i++)
+ pthread_create(&tid, NULL, myThreadFun, (void *)&tid);
+ pthread_join(tid,NULL);
+ return 0;
+ }
